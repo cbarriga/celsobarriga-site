@@ -5,7 +5,7 @@ import { buildDetailPaths } from "../../scripts/collections";
 import { formatReadingTime } from "../../scripts/utils";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("long_form");
+  const entries = await getCollection("journal");
   return buildDetailPaths(entries);
 }
 
@@ -16,7 +16,7 @@ const { Content, remarkPluginFrontmatter } = await render(entry);
 <MarkdownPostLayout
   frontmatter={entry.data}
   currentId={entry.id}
-  collection="long_form"
+  collection="journal"
 >
   <p class="prose prose-slate dark:prose-invert italic no-underline">
     {formatReadingTime(remarkPluginFrontmatter.readingTimeMs)}

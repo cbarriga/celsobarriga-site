@@ -3,7 +3,7 @@ import Homepage from "../components/Homepage.astro";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 
-const collections = ["long_form", "short_form", "muses", "zeitweilig"] as const;
+const collections = ["journal"] as const;
 let allImages: { large: string[]; medium: string[]; small: string[] } = {
   large: [],
   medium: [],

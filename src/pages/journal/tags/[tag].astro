@@ -8,8 +8,8 @@ import { formatReadingTime } from "../../../scripts/utils";
 import getReadingTime from "reading-time";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("muses");
-  return buildTagPaths(entries, "muses");
+  const entries = await getCollection("journal");
+  return buildTagPaths(entries, "journal");
 }
 
 const { tag } = Astro.params;
