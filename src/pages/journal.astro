@@ -5,17 +5,17 @@ import BlogPost from "../components/BlogPost.astro";
 import { sortByDate } from "../components/sortByDate";
 import { formatReadingTime } from "../scripts/utils";
 import getReadingTime from "reading-time";
-const pageTitle = "Zeitweilig";
-const allZeitweilig = await getCollection("zeitweilig");
+const pageTitle = "Journal";
+const allJournal = await getCollection("journal");
 ---
 
 <BaseLayout title={pageTitle} is404Page={false}>
   {
-    allZeitweilig
+    allJournal
       .sort(sortByDate)
       .map((post) => (
         <BlogPost
-          url={`/zeitweilig/${post.id}/`}
+          url={`/journal/${post.id}/`}
           image={post.data?.image?.src || ""}
           alt={post.data?.image?.alt || ""}
           title={post.data?.title || ""}

@@ -7,12 +7,7 @@ const parser = new MarkdownIt();
 
 /** Valid content collection names for use with getCollection(). */
 export type CollectionName =
-  | "muses"
-  | "short_form"
-  | "long_form"
-  | "zeitweilig"
-  | "authors"
-  | "cv";
+ | "journal";
 
 /** Shared shape of a content collection entry used across all collections. */
 interface CollectionPost {
