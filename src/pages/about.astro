@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import portrait from "../assets/me.png";
+---
+
+<BaseLayout title="About" description="About Celso Barriga">
+  <section class="max-w-prose mx-auto mt-16 mb-24 px-6 font-overpass-mono">
+    <h1 class="text-2xl mb-10 tracking-tight dark:text-[rgb(245,245,245)]">
+      About
+    </h1>
+
+    <div class="about-body text-base leading-relaxed dark:text-[rgb(245,245,245)]">
+      <Image
+        src={portrait}
+        alt="Celso Barriga"
+        width={256}
+        class="about-portrait"
+      />
+
+      <p class="mb-6">
+        My name is Celso Barriga. I live in southern New Hampshire.
+      </p>
+
+      <p class="mb-6">
+        I photograph because I want to hold on to things that don't hold still —
+        a particular light, a moment of quiet in a busy street, something
+        ordinary that briefly isn't. I'm drawn to stillness. I want the
+        photographs to slow the viewer down, if only for a moment. If they feel
+        timeless, or a little nostalgic years from now, I'll have done what I
+        was trying to do.
+      </p>
+
+      <p class="mb-6">
+        I shoot with available light and no hurry. Mostly I walk.
+      </p>
+
+      <p class="mb-6">
+        This site is a journal. Not every entry will be remarkable. Some will
+        just be notes from a walk.
+      </p>
+
+      <h2 class="text-lg mt-10 mb-4 tracking-tight clear-left">Cameras</h2>
+      <ul class="space-y-1 list-none pl-0">
+        <li>Leica M10-R</li>
+        <li>Leica Q3 43</li>
+        <li>Leica SL3</li>
+        <li>Leica MP (film)</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .about-portrait {
+    display: block;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  .about-body::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  @media (min-width: 768px) {
+    .about-portrait {
+      float: left;
+      margin: 0 1.5rem 1rem 0;
+    }
+  }
+</style>
