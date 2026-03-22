@@ -9,6 +9,7 @@ import { SITE_AUTHOR, SOCIAL_LINKS } from "../consts";
 >
   <div class="text-[12px] text-center items-center flex justify-center">
     &copy; {today.getFullYear()} {SITE_AUTHOR}. All rights reserved.
+    <span> · Build {__COMMIT_SHA__.slice(0, 7)}</span>
   </div>
   <div class="flex justify-center gap-3 m-2 sm:m-0">
     <!--a href={SOCIAL_LINKS.mastodon} target="_blank" rel="noopener noreferrer">
