@@ -15,6 +15,7 @@ import tailwindcss from "@tailwindcss/vite";
 const isDev =
   process.env.NODE_ENV !== "production" && !process.argv.includes("build");
 
+  
 // https://astro.build/config
 export default defineConfig({
   site:
@@ -128,5 +129,8 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      __COMMIT_SHA__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA ?? 'local'),
+    },
   },
 });
