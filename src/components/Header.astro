@@ -22,30 +22,32 @@ const favicon_avif = await getImage({
 ---
 
 <header class="mb-[20px] mt-[-10px]">
-  <nav aria-label="Main navigation" class="flex items-center justify-between w-full h-[30px]">
+  <nav aria-label="Main navigation" class="flex items-center justify-between w-full h-[44px]">
     {
       !is404Page && (
-        <div class="flex items-center h-[30px]">
-          <a href="/" class="block">
+        <div class="flex items-center h-[44px]">
+          <a href="/" class="flex items-center gap-5">
             <img
-              class="favicon dark:invert w-[30px] h-[30px]"
+              class="favicon dark:invert w-[44px] h-[44px]"
               src={favicon_avif.src}
               alt="Home"
-              width="30"
-              height="30"
+              width="44"
+              height="44"
             />
+            <span class="text-[20px] tracking-[0.2em] font-light dark:text-white hidden sm:block" 
+      style="font-family: var(--font-overpass-mono)">Celso Barriga</span>
           </a>
         </div>
       )
     }
-    <div class="flex items-center h-[30px] gap-2">
+    <div class="flex items-center h-[44px] gap-2">
       {
         !is404Page && (
           <>
-            <div class="flex items-center justify-center h-[30px] w-[30px]">
+            <div class="flex items-center justify-center h-[44px] w-[44px]">
               <ThemeToggle />
             </div>
-            <div class="flex items-center justify-center h-[30px] w-[30px]">
+            <div class="flex items-center justify-center h-[44px] w-[44px]">
               <Hamburger client:idle />
             </div>
           </>
