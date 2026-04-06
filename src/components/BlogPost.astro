@@ -11,9 +11,10 @@ export interface Props {
   positionx: string;
   positiony: string;
   minutesRead?: string;
+  tags?: string[];
 }
 
-const { title, url, image, alt, description, pubDate, positionx, positiony, minutesRead } =
+const { title, url, image, alt, description, pubDate, positionx, positiony, minutesRead, tags } =
   Astro.props;
 const pd = new Date(pubDate);
 const pdDatePart = pd.toLocaleDateString("en-US", {
@@ -70,6 +71,16 @@ const publishedDate = `${pdDatePart} ${pdHours}:${pdMinutes}:${pdSeconds}.${pdMs
     <p class="font-inconsolata normal-case line-clamp-3 text-base">
       {description}
     </p>
+    {tags && tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {tags.map(tag => (
+          <a
+            href={`/journal/tags/${tag}/`}
+            class="font-inconsolata text-xs px-2 py-0.5 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-gray-500 dark:hover:border-gray-300 transition-colors"
+          >{tag}</a>
+        ))}
+      </div>
+    )}
     <a
       href={url}
       class="dark:prose-invert max-w-max max-h-max flex flex-row shrink-0 group"

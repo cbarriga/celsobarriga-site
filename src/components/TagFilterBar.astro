@@ -1,0 +1,18 @@
+---
+interface Props {
+  tags: string[];
+  activeTag?: string;
+  basePath: string;
+}
+const { tags, activeTag, basePath } = Astro.props;
+
+const activeClass = "px-3 py-1 border border-current text-current font-inconsolata text-sm transition-colors";
+const inactiveClass = "px-3 py-1 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-gray-500 dark:hover:border-gray-300 font-inconsolata text-sm transition-colors";
+---
+
+<nav class="flex flex-wrap gap-2 mb-10">
+  <a href={`/${basePath}/`} class={!activeTag ? activeClass : inactiveClass}>All</a>
+  {tags.map(tag => (
+    <a href={`/${basePath}/tags/${tag}/`} class={activeTag === tag ? activeClass : inactiveClass}>{tag}</a>
+  ))}
+</nav>

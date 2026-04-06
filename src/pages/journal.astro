@@ -2,14 +2,17 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
+import TagFilterBar from "../components/TagFilterBar.astro";
 import { sortByDate } from "../components/sortByDate";
 import { formatReadingTime } from "../scripts/utils";
 import getReadingTime from "reading-time";
 const pageTitle = "Journal";
 const allJournal = await getCollection("journal");
+const allTags = [...new Set(allJournal.flatMap(p => p.data.tags))].sort();
 ---
 
 <BaseLayout title={pageTitle} is404Page={false}>
+  <TagFilterBar tags={allTags} basePath="journal" />
   {
     allJournal
       .sort(sortByDate)
@@ -24,6 +27,7 @@ const allJournal = await getCollection("journal");
           positionx={post.data?.image?.positionx || ""}
           positiony={post.data?.image?.positiony || ""}
           minutesRead={formatReadingTime(getReadingTime(post.body ?? "").time)}
+          tags={post.data.tags}
         />
       ))
   }
