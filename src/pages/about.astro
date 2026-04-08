@@ -2,6 +2,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import portrait from "../assets/me.png";
+import { CONTACT_EMAIL } from "../consts";
+
+// Encode email as HTML entities so the raw address doesn't appear in markup
+const encodedEmail = CONTACT_EMAIL.split("").map(c => `&#${c.charCodeAt(0)};`).join("");
+const encodedMailto = `mailto:${CONTACT_EMAIL}`.split("").map(c => `&#${c.charCodeAt(0)};`).join("");
 ---
 
 <BaseLayout title="About" description="About Celso Barriga">
@@ -47,9 +52,29 @@ import portrait from "../assets/me.png";
         <li>Leica SL3</li>
         <li>Leica MP (film)</li>
       </ul>
+
+      <h2 id="contact" class="text-lg mt-10 mb-4 tracking-tight">Contact</h2>
+      <p class="mb-6">
+        Feel free to reach out —
+        <a
+          id="contact-link"
+          href="#"
+          data-e={encodedMailto}
+          class="underline underline-offset-4 decoration-dotted hover:opacity-60 transition-opacity"
+        ><span id="contact-label" set:html={encodedEmail}></span></a>.
+      </p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const link = document.getElementById("contact-link") as HTMLAnchorElement | null;
+  if (link) {
+    const encoded = link.dataset.e ?? "";
+    const decoded = encoded.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+    link.href = decoded;
+  }
+</script>
 
 <style is:global>
   .about-portrait {
