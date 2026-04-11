@@ -179,37 +179,60 @@ The project includes custom CLI tools for creating and managing content:
 
 ```bash
 # Development server
-bun run dev
+npm run dev
 
 # Standard production build
-bun run build
+npm run build
 
 # GitHub Pages specific build (includes base path configuration)
-bun run build:github-pages
+npm run build:github-pages
 
 # Preview production build
-bun run preview
+npm run preview
+```
+
+#### Testing
+
+```bash
+# Run all tests once (also runs automatically in CI before every build)
+npm test
+
+# Watch mode — re-runs tests on every file save (run alongside dev server)
+npm run test:watch
+```
+
+#### Linting
+
+```bash
+# Full validation: build + HTML validate + internal link check
+npm run lint:site
+
+# HTML validation only (requires a prior build)
+npm run lint:html
+
+# Internal link check only (requires a prior build)
+npm run lint:links
 ```
 
 ### Content Creation CLI
 
 ```bash
 # Run the content creator
-bun run create
+npm run create
 
 # Specify content type directly
-bun run create -t muses
+npm run create -t muses
 
 # Preview frontmatter without creating a file (dry run)
-bun run create --dry-run
+npm run create --dry-run
 # or
-bun run create -d
+npm run create -d
 
 # Show help for all options
-bun run create --help
+npm run create --help
 
 # Non-interactive mode (for scripts or automated workflows)
-bun run create --non-interactive --type muses --title "Post Title" --description "Post description" --tags "tag1,tag2" --pub-date "2024-05-19T12:00:00Z" --updated-date "2024-05-20T10:00:00Z"
+npm run create --non-interactive --type muses --title "Post Title" --description "Post description" --tags "tag1,tag2" --pub-date "2024-05-19T12:00:00Z" --updated-date "2024-05-20T10:00:00Z"
 ```
 
 This interactive tool:
@@ -224,13 +247,13 @@ This interactive tool:
 
 ```bash
 # Update an existing post's frontmatter (e.g., add/modify updated date)
-bun run update-post --file muses/2025-05-19-commodification.mdx --updated-date "2025-05-20T12:00:00Z"
+npm run update-post --file muses/2025-05-19-commodification.mdx --updated-date "2025-05-20T12:00:00Z"
 
 # Preview changes without writing to file
-bun run update-post --file short_form/2025-05-19-the-essence-of-light.mdx --tags "photography,light,art,philosophy" --dry-run
+npm run update-post --file short_form/2025-05-19-the-essence-of-light.mdx --tags "photography,light,art,philosophy" --dry-run
 
 # Update multiple fields at once
-bun run update-post --file muses/2025-05-19-commodification.mdx \
+npm run update-post --file muses/2025-05-19-commodification.mdx \
   --title "New Title" \
   --tags "photography,art,economics,critique" \
   --updated-date "2025-05-20T08:15:00Z"
@@ -817,17 +840,17 @@ To start working with this project:
 1. Run the development server:
 
    ```
-   bun run dev
+   npm run dev
    ```
 
 1. Build for production:
 
    ```bash
    # Standard build (for Cloudflare, Deno, Docker)
-   bun run build
+   npm run build
 
    # GitHub Pages specific build (with base path)
-   bun run build:github-pages
+   npm run build:github-pages
    ```
 
    Both commands include Pagefind indexing for search functionality.
@@ -835,14 +858,14 @@ To start working with this project:
 1. (Optional) Run local quality checks before committing:
 
    ```bash
-   bun run lint:site   # build, HTML validate, and internal link check
+   npm run lint:site   # build, HTML validate, and internal link check
    ```
 
 1. Content workflows: the CLI helpers for creating/editing posts are documented in `scripts/README.md`.
 
 1. Preview the production build:
    ```
-   bun run preview
+   npm run preview
    ```
 
 ## Deployment Options
