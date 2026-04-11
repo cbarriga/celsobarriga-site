@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import Analytics from "@vercel/analytics/astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollToTop from "../components/ScrollToTop";
@@ -205,6 +206,7 @@ const formattedUpdatedDate = updatedDate
     </main>
     <ScrollToTop client:idle />
     {!hideHeaderFooter && <Footer />}
+    <Analytics />
   </body>
 </html>
 <style is:global>
