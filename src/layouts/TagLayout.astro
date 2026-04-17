@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import GetRandomImage from "../components/GetRandomImage.astro";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import type { CollectionName } from "../scripts/collections";
 
 interface TagImages {
@@ -24,8 +25,9 @@ const tags = [...new Set(allContent.map((post) => post.data.tags).flat())];
 // De-duplicate image optimization: process each unique src only once
 const imageCache = new Map<string, { large: string | null; medium: string | null; small: string | null }>();
 
-async function getOptimizedImages(src: string, alt: string) {
-  if (imageCache.has(src)) return imageCache.get(src)!;
+async function getOptimizedImages(src: ImageMetadata, alt: string) {
+  const cacheKey = src.src;
+  if (imageCache.has(cacheKey)) return imageCache.get(cacheKey)!;
   const [largeImage, mediumImage, smallImage] = await Promise.all([
     getImage({ src, alt, width: 1920, height: 1080, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
     getImage({ src, alt, width: 1280, height: 720, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
@@ -36,7 +38,7 @@ async function getOptimizedImages(src: string, alt: string) {
     medium: mediumImage?.src ?? null,
     small: smallImage?.src ?? null,
   };
-  imageCache.set(src, result);
+  imageCache.set(cacheKey, result);
   return result;
 }
 
