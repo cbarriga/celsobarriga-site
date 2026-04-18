@@ -12,11 +12,11 @@
   },
   "routes": [
     {
-      "pattern": "erfianugrah.com",
+      "pattern": "celsobarriga.com",
       "custom_domain": true,
     },
     {
-      "pattern": "www.erfianugrah.com",
+      "pattern": "www.celsobarriga.com",
       "custom_domain": true,
     },
   ],

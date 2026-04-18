@@ -37,32 +37,6 @@ jobs:
           path: dist
           retention-days: 7
 
-  deploy-to-deno:
-    needs: build-revista
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-
-      - name: Deploy to Deno
-        uses: denoland/deployctl@v1
-        with:
-          project: "revista-3"
-          entrypoint: "https://deno.land/std@0.188.0/http/file_server.ts"
-          root: "dist"
-
   deploy-to-cloudflare-workers:
     needs: build-revista
     runs-on: ubuntu-latest
