@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/sanitize-html": "^2.16.0",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "astro": "6.0.7",
     "astro-icon": "^1.1.5",
     "caniuse-lite": "^1.0.30001759",
