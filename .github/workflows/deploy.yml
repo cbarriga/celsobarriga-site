@@ -24,6 +24,14 @@ jobs:
       - name: Install project dependencies
         run: npm ci
 
+      - name: Cache Astro image processing
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: ${{ runner.os }}-astro-images-${{ hashFiles('src/content/**/*.jpg', 'src/content/**/*.png', 'src/content/**/*.jpeg') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-images-
+
       - name: Run tests
         run: npm test
 
