@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";
+import type { ImageMetadata } from "astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 const parser = new MarkdownIt();
@@ -12,6 +13,7 @@ export type CollectionName =
 /** Shared shape of a content collection entry used across all collections. */
 interface CollectionPost {
   id: string;
+  collection?: string;
   body?: string;
   data: {
     title: string;
@@ -21,7 +23,7 @@ interface CollectionPost {
     updatedDate?: Date;
     author: string;
     image?: {
-      src: string;
+      src: ImageMetadata;
       alt: string;
       positionx?: string;
       positiony?: string;

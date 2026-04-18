@@ -10,12 +10,7 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 const journal = defineCollection({
-  loader: glob({
-    pattern: "**\/[^_]*.mdx",
-    base: "./src/content/journal",
-    generateId: ({ entry }) =>
-      entry.replace(/\.[^.]+$/, "").replace(/\/index$/, ""),
-  }),
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/journal" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
