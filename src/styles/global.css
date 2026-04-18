@@ -60,3 +60,24 @@ h1 {
   margin: 1rem 0;
   font-size: 2.5rem;
 }
+
+/* Image captions: <em> inside a <p> that also contains an <img> */
+.prose p:has(img) > img {
+  margin-bottom: 0;
+}
+
+.prose p:has(img) > em {
+  display: block;
+  font-size: 0.8em;
+  color: #64748b;
+  background-color: #e2e8f0;
+  padding: 0.4rem 0.75rem;
+  margin-top: 0;
+  text-align: left;
+  hyphens: none;
+}
+
+html.dark .prose p:has(img) > em {
+  color: #94a3b8;
+  background-color: rgba(255, 255, 255, 0.08);
+}
