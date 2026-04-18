@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatDate, formatReadingTime } from "../scripts/utils";
+import { formatDate, formatReadingTime, shuffle } from "../scripts/utils";
 
 describe("formatDate", () => {
   it("returns undefined for undefined input", () => {
@@ -45,5 +45,32 @@ describe("formatReadingTime", () => {
 
   it("omits minutes when zero", () => {
     expect(formatReadingTime(30000)).toBe("30s 0ms");
+  });
+});
+
+describe("shuffle", () => {
+  it("returns a new array without mutating the original", () => {
+    const original = [1, 2, 3, 4, 5];
+    const result = shuffle(original);
+    expect(result).not.toBe(original);
+    expect(original).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it("returns an array with the same elements", () => {
+    const original = [1, 2, 3, 4, 5];
+    const result = shuffle(original);
+    expect(result.slice().sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it("returns the same length", () => {
+    expect(shuffle([1, 2, 3])).toHaveLength(3);
+  });
+
+  it("handles an empty array", () => {
+    expect(shuffle([])).toEqual([]);
+  });
+
+  it("handles a single-element array", () => {
+    expect(shuffle([42])).toEqual([42]);
   });
 });
