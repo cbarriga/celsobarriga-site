@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Revista-4
+name: CI/CD Pipeline
 
 on:
   push:
@@ -8,62 +8,30 @@ on:
   release:
     types: [published]
 
-env:
-  REGISTRY_IMAGE: erfianugrah/revista-4
-
 jobs:
   build-revista:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
-
-      - name: Setup Bun environment
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: "1.3.10"
-
-      - name: Cache dependencies and build artifacts
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock', '**/package.json', 'astro.config.mjs', 'tailwind.config.mjs') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock', '**/package.json') }}-
-            ${{ runner.os }}-bun-
+          cache: "npm"
 
       - name: Install project dependencies
-        run: bun install
+        run: npm ci
 
       - name: Run tests
         run: npm test
 
-      - name: Build project with retry
-        env:
-          MAX_ATTEMPTS: 3
-          RETRY_INTERVAL: 30
-        run: |
-          attempt=1
-          until bun run build || [ $attempt -eq $MAX_ATTEMPTS ]; do
-            echo "Build attempt $attempt failed. Retrying in $RETRY_INTERVAL seconds..."
-            sleep $RETRY_INTERVAL
-            attempt=$((attempt + 1))
-          done
-
-          if [ $attempt -eq $MAX_ATTEMPTS ] && ! bun run build; then
-            echo "Build failed after $MAX_ATTEMPTS attempts."
-            exit 1
-          fi
+      - name: Build project
+        run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
@@ -78,7 +46,7 @@ jobs:
       contents: read
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
@@ -100,23 +68,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
-
-      - name: Setup Bun environment
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: "1.3.10"
+          cache: "npm"
 
       - name: Install dependencies
-        run: bun install
+        run: npm ci
 
       - name: Download built artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
@@ -127,136 +91,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_WRANGLER_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
-          packageManager: bun
+          packageManager: npm
           wranglerVersion: "4.75.0"
-
-  build-and-push-docker:
-    runs-on: ubuntu-latest
-    outputs:
-      digest: ${{ steps.build.outputs.digest }}
-      tags: ${{ steps.meta.outputs.tags }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-
-      - name: Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY_IMAGE }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Docker image
-        id: build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: true
-          sbom: true
-
-  inspect-docker-image:
-    needs: build-and-push-docker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Inspect Docker image
-        run: |
-          echo "Inspecting image digest: ${{ needs.build-and-push-docker.outputs.digest }}"
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}@${{ needs.build-and-push-docker.outputs.digest }}
-
-  sign-docker-image:
-    needs: [build-and-push-docker, inspect-docker-image]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # Needed for keyless signing
-    steps:
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.6.0
-        with:
-          cosign-release: "v2.4.1"
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-
-      - name: Sign the Docker image
-        env:
-          COSIGN_EXPERIMENTAL: 1
-          IMAGE_DIGEST: ${{ needs.build-and-push-docker.outputs.digest }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          IMAGE_REF="${REGISTRY_IMAGE}@${IMAGE_DIGEST}"
-
-          # Check if image is already signed
-          if cosign verify "${IMAGE_REF}" \
-            --certificate-identity-regexp="https://github.com/${REPOSITORY}/.*" \
-            --certificate-oidc-issuer=https://token.actions.githubusercontent.com 2>/dev/null; then
-            echo "Image is already signed and verified. Skipping signing."
-            exit 0
-          fi
-
-          # Attempt to sign with retry logic
-          MAX_ATTEMPTS=3
-          RETRY_DELAY=10
-          attempt=1
-
-          while [ $attempt -le $MAX_ATTEMPTS ]; do
-            if cosign sign --yes "${IMAGE_REF}"; then
-              echo "Successfully signed image on attempt $attempt"
-              exit 0
-            fi
-
-            if [ $attempt -lt $MAX_ATTEMPTS ]; then
-              echo "Signing attempt $attempt failed. Retrying in $RETRY_DELAY seconds..."
-              sleep $RETRY_DELAY
-              RETRY_DELAY=$((RETRY_DELAY * 2))
-            fi
-            attempt=$((attempt + 1))
-          done
-
-          echo "Warning: Signing failed after $MAX_ATTEMPTS attempts."
-          echo "The image is still available and usable, but without a signature."
-          exit 0
-
-      - name: Verify Docker image signature
-        continue-on-error: true
-        env:
-          COSIGN_EXPERIMENTAL: 1
-          IMAGE_DIGEST: ${{ needs.build-and-push-docker.outputs.digest }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          cosign verify "${REGISTRY_IMAGE}@${IMAGE_DIGEST}" \
-            --certificate-identity-regexp="https://github.com/${REPOSITORY}/.*" \
-            --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 
   purge-cloudflare-cache:
     needs: [deploy-to-cloudflare-workers]
