@@ -10,16 +10,4 @@
     "binding": "ASSETS",
     "run_worker_first": true,
   },
-  "routes": [
-    {
-      "pattern": "celsobarriga.com",
-      "custom_domain": true,
-      "override_existing_dns_record": true,
-    },
-    {
-      "pattern": "www.celsobarriga.com",
-      "custom_domain": true,
-      "override_existing_dns_record": true,
-    },
-  ],
 }
