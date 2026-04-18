@@ -22,8 +22,8 @@ export default {
     const url = new URL(request.url);
 
     // Redirect www -> apex with a 301 (permanent)
-    if (url.hostname === "www.erfianugrah.com") {
-      url.hostname = "erfianugrah.com";
+    if (url.hostname === "www.celsobarriga.com") {
+      url.hostname = "celsobarriga.com";
       return Response.redirect(url.toString(), 301);
     }
 

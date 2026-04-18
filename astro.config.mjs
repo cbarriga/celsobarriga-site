@@ -20,15 +20,15 @@ const isDev =
 export default defineConfig({
   site:
     process.env.GITHUB_PAGES === "true"
-      ? "https://erfianugrah.github.io"
-      : "https://www.erfianugrah.com",
-  base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
+      ? "https://cbarriga.github.io"
+      : "https://www.celsobarriga.com",
+  base: process.env.GITHUB_PAGES === "true" ? "/celsobarriga-site" : undefined,
 
   image: {
     // responsiveStyles: true,
     // layout: "full-width",
     // objectFit: "contain",
-    domains: ["erfianugrah.com", "image.erfi.io"],
+    domains: ["celsobarriga.com"],
     service: isDev
       ? { entrypoint: "astro/assets/services/noop" }
       : {
