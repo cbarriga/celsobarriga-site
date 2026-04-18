@@ -141,6 +141,7 @@ export default function HeroImage({
             aria-hidden="true"
             fetchPriority="high"
             decoding="sync"
+            draggable={false}
             onLoad={() => setImageLoaded(true)}
             className={`absolute left-0 right-0 w-full object-cover transition-opacity duration-700 ${
               imageLoaded ? "opacity-100" : "opacity-0"

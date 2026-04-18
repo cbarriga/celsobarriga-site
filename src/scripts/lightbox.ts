@@ -537,7 +537,7 @@ function initialize(): void {
 
   const links = document.querySelectorAll<HTMLAnchorElement>("a.glightbox");
   images = Array.from(links).map((link) => ({
-    src: link.href,
+    src: link.dataset.src ?? link.href,
     alt: link.querySelector("img")?.alt ?? "",
   }));
 

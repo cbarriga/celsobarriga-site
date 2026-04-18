@@ -209,6 +209,14 @@ const formattedUpdatedDate = updatedDate
     {!hideHeaderFooter && <Footer />}
     <Analytics />
     <SpeedInsights />
+    <script>
+      document.addEventListener("contextmenu", (e) => {
+        if (e.target instanceof HTMLImageElement) e.preventDefault();
+      });
+      document.addEventListener("dragstart", (e) => {
+        if (e.target instanceof HTMLImageElement) e.preventDefault();
+      });
+    </script>
   </body>
 </html>
 <style is:global>
