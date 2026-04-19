@@ -18,11 +18,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           cache: "npm"
 
       - name: Install project dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Cache Astro image processing
         uses: actions/cache@v4
