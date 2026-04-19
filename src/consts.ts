@@ -6,7 +6,7 @@ export const SITE_AUTHOR = "Celso Barriga";
 
 /** CDN base URLs for remote images. */
 export const CDN_FAVICON_URL = "/favicon.png";
-export const CDN_COVER_IMAGE_URL = "https://image.erfi.io/tenhult_3.jpg";
+export const CDN_COVER_IMAGE_URL = "";
 
 /** Contact email — change this one value to update it everywhere. */
 export const CONTACT_EMAIL = "contactme@barriga.net";

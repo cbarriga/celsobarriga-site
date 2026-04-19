@@ -212,7 +212,7 @@ function handleNonInteractive() {
   const tags = options.tags
     ? options.tags.split(",").map((t) => t.trim())
     : [collectionType];
-  const author = options.author || "Erfi Anugrah";
+  const author = options.author || "Celso Barriga";
 
   let image;
   if (options.imageSrc && options.imageAlt) {
@@ -307,7 +307,7 @@ async function handleInteractive() {
       type: "input",
       name: "author",
       message: `${chalk.cyan("Author:")}`,
-      default: "Erfi Anugrah",
+      default: "Celso Barriga",
     },
     {
       type: "input",

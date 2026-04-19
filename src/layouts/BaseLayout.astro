@@ -17,15 +17,17 @@ import {
   SOCIAL_LINKS,
 } from "../consts";
 const baseUrl = new URL(Astro.request.url).origin;
-const metaImage = await getImage({
-  src: CDN_COVER_IMAGE_URL,
-  alt: `Cover image for ${SITE_TITLE} website`,
-  height: 720,
-  width: 1280,
-  decoding: "async",
-  format: "webp",
-  loading: "lazy",
-});
+const metaImage = CDN_COVER_IMAGE_URL
+  ? await getImage({
+      src: CDN_COVER_IMAGE_URL,
+      alt: `Cover image for ${SITE_TITLE} website`,
+      height: 720,
+      width: 1280,
+      decoding: "async",
+      format: "webp",
+      loading: "lazy",
+    })
+  : null;
 
 const favicon_webp = await getImage({
   src: CDN_FAVICON_URL,
