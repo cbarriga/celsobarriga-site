@@ -5,8 +5,6 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  release:
-    types: [published]
 
 jobs:
   build-revista:
@@ -39,53 +37,3 @@ jobs:
 
       - name: Build project
         run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-          retention-days: 7
-
-  deploy-to-cloudflare-workers:
-    needs: build-revista
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Download built artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_WRANGLER_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
-          packageManager: npm
-          wranglerVersion: "4.75.0"
-
-  purge-cloudflare-cache:
-    needs: [deploy-to-cloudflare-workers]
-    if: always() && needs.deploy-to-cloudflare-workers.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Purge Cloudflare Cache
-        run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_CACHE_PURGE_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data '{"hosts":["${{ secrets.CLOUDFLARE_ZONE_NAME }}", "${{ secrets.CLOUDFLARE_WWW}}" ]}'
