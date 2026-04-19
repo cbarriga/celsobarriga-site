@@ -1,4 +1,5 @@
 import { defineConfig, fontProviders } from "astro/config";
+import { execSync } from "child_process";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import markdoc from "@astrojs/markdoc";
@@ -10,6 +11,13 @@ import { remarkReadingTime } from "./src/scripts/remark-reading-time.mjs";
 import undiciRetry from "./src/scripts/undici-retry.ts";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
+let commitDate;
+try {
+  commitDate = execSync("git log -1 --format=%cd --date=format:%Y%m%d").toString().trim();
+} catch {
+  commitDate = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+}
+
 // Use no-op passthrough image service in dev to skip Sharp processing.
 // Images are served as-is during development; full optimization runs in production builds.
 const isDev =
@@ -131,6 +139,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     define: {
       __COMMIT_SHA__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA ?? 'local'),
+      __COMMIT_DATE__: JSON.stringify(commitDate),
     },
   },
 });
