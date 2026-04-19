@@ -18,11 +18,63 @@ Vercel watches `main` and auto-deploys on every push. No manual deploy step need
 git push origin main  →  auto-deploys to www.celsobarriga.com
 ```
 
+## Environment Setup (VSCode)
+
+### Prerequisites
+
+- **Node.js 22** via [nvm](https://github.com/nvm-sh/nvm):
+  ```bash
+  nvm install 22
+  nvm use 22
+  ```
+- **Git LFS** — required for photos stored in LFS:
+  ```bash
+  # macOS
+  brew install git-lfs
+  git lfs install
+  ```
+
+### Clone
+
+```bash
+git clone https://github.com/cbarriga/celsobarriga-site.git
+cd celsobarriga-site
+```
+
+Git LFS files (photos) download automatically on clone. If they didn't:
+```bash
+git lfs pull
+```
+
+### VSCode Extensions
+
+Open the repo in VSCode — it will prompt to install the recommended extension:
+
+- **Astro** (`astro-build.astro-vscode`) — syntax highlighting, IntelliSense, and type checking for `.astro` files
+
+Also useful:
+- **Tailwind CSS IntelliSense** (`bradlc.vscode-tailwindcss`) — autocomplete for Tailwind classes
+- **MDX** (`unifiedjs.vscode-mdx`) — syntax highlighting for `.mdx` files
+
+### Install and Run
+
+```bash
+npm install --legacy-peer-deps
+```
+
+Then open two terminals:
+
+```bash
+# Terminal 1
+npm run dev        # http://localhost:4321
+
+# Terminal 2
+npm run test:watch # re-runs tests on every file save
+```
+
 ## Local Development
 
 ```bash
-nvm use 22
-npm install --legacy-peer-deps
 npm run dev        # http://localhost:4321
 npm run build      # production build
 npm run preview    # preview production build locally
