@@ -25,7 +25,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Cache Astro image processing
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules/.astro
           key: ${{ runner.os }}-astro-images-${{ hashFiles('src/content/**/*.jpg', 'src/content/**/*.png', 'src/content/**/*.jpeg') }}
