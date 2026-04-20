@@ -1,4 +1,12 @@
 {
-  "recommendations": ["astro-build.astro-vscode"],
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "GitHub.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "bradlc.vscode-tailwindcss",
+    "unifiedjs.vscode-mdx",
+    "anthropic.claude-code",
+    "shd101wyy.markdown-preview-enhanced"
+  ],
   "unwantedRecommendations": []
 }
