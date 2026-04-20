@@ -56,8 +56,39 @@ Tailwind CSS 4 with photography-optimized custom breakpoints: `sm:800px`, `md:12
 - `src/scripts/utils.ts` — `shuffle()`, `formatDate()`
 - `src/scripts/duration.ts` — timeline duration calculations
 
+## Project Structure
+
+```
+src/
+  components/     PascalCase .astro and .tsx files
+  content/        MDX content collections (journal only)
+  content.config.ts   Zod schema for journal collection
+  consts.ts       Site-wide constants (title, author, CDN URLs)
+  layouts/        PascalCase .astro layout files
+  pages/          File-based routing
+  scripts/        camelCase helpers
+  styles/         global.css (Tailwind entry point)
+public/           Static assets (favicon, etc.)
+_inbox/           Staging folder for photo candidates (never published)
+```
+
+## Entry Structure
+
+```
+src/content/journal/[place]-[YYYY-MM]/
+  index.mdx       Content and frontmatter
+  01-name.jpg     Photos (numbered for organization, not story order)
+  02-name.jpg
+```
+
 ## Deployment
 
-**Vercel** — primary deployment. Watches `main` and auto-deploys on every push to `www.celsobarriga.com`.
+**Vercel** — primary deployment. Watches `main` and auto-deploys on every push to `www.celsobarriga.com`. `celsobarriga.com` → 301 redirect to `www.celsobarriga.com`.
 
 CI/CD via `.github/workflows/deploy.yml`: runs tests and build on every push/PR to `main`.
+
+## Commit Style
+
+Conventional commits: `feat:`, `fix:`, `chore:`, `content:`
+
+Example: `content: add nashville-2026-03 journal entry`
