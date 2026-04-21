@@ -1,0 +1,102 @@
+---
+---
+<button
+  id="hamburger-btn"
+  class="w-7.5 h-7.5 bg-transparent border-0 p-0 cursor-pointer relative hamburger flex items-center justify-center"
+  aria-label="Open menu"
+  aria-expanded="false"
+  aria-controls="nav-links"
+>
+  <div class="relative w-6 h-4.5">
+    <span
+      id="ham-top"
+      class="absolute h-0.5 w-full bg-current left-0 top-0 transition-transform duration-300"
+    />
+    <span
+      id="ham-mid"
+      class="absolute h-0.5 w-full bg-current left-0 top-2 transition-opacity duration-300"
+    />
+    <span
+      id="ham-bot"
+      class="absolute h-0.5 w-full bg-current left-0 top-4 transition-transform duration-300"
+    />
+  </div>
+</button>
+
+<script>
+  let isOpen = false;
+
+  function closeMenu() {
+    isOpen = false;
+    const btn = document.getElementById("hamburger-btn");
+    const navLinks = document.getElementById("nav-links");
+    const top = document.getElementById("ham-top") as HTMLElement | null;
+    const mid = document.getElementById("ham-mid") as HTMLElement | null;
+    const bot = document.getElementById("ham-bot") as HTMLElement | null;
+
+    if (top) top.style.transform = "translateY(0) rotate(0)";
+    if (mid) mid.style.opacity = "1";
+    if (bot) bot.style.transform = "translateY(0) rotate(0)";
+    if (btn) {
+      btn.setAttribute("aria-label", "Open menu");
+      btn.setAttribute("aria-expanded", "false");
+    }
+    if (navLinks) {
+      navLinks.classList.remove("open");
+      navLinks.classList.add("collapsed");
+    }
+  }
+
+  function openMenu() {
+    isOpen = true;
+    const btn = document.getElementById("hamburger-btn");
+    const navLinks = document.getElementById("nav-links");
+    const top = document.getElementById("ham-top") as HTMLElement | null;
+    const mid = document.getElementById("ham-mid") as HTMLElement | null;
+    const bot = document.getElementById("ham-bot") as HTMLElement | null;
+
+    if (top) top.style.transform = "translateY(8px) rotate(45deg)";
+    if (mid) mid.style.opacity = "0";
+    if (bot) bot.style.transform = "translateY(-8px) rotate(-45deg)";
+    if (btn) {
+      btn.setAttribute("aria-label", "Close menu");
+      btn.setAttribute("aria-expanded", "true");
+    }
+    if (navLinks) {
+      navLinks.classList.remove("collapsed");
+      navLinks.classList.add("open");
+    }
+  }
+
+  function initHamburger() {
+    const btn = document.getElementById("hamburger-btn");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      if (isOpen) closeMenu();
+      else openMenu();
+    });
+  }
+
+  // Document-level listeners set up once (module runs once per page session)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen) closeMenu();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!isOpen) return;
+    const navLinks = document.getElementById("nav-links");
+    const target = e.target as Node;
+    if (
+      navLinks &&
+      !navLinks.contains(target) &&
+      !(e.target as Element).closest(".hamburger")
+    ) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    closeMenu();
+    initHamburger();
+  });
+</script>

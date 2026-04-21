@@ -1,5 +1,5 @@
 ---
-import Hamburger from "./Hamburger.tsx";
+import Hamburger from "./Hamburger.astro";
 import Navigation from "./Navigation.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { getImage } from "astro:assets";
@@ -21,34 +21,34 @@ const favicon_avif = await getImage({
 });
 ---
 
-<header class="mb-[20px] mt-[-10px]">
-  <nav aria-label="Main navigation" class="flex items-center justify-between w-full h-[44px]">
+<header class="mb-5 -mt-2.5">
+  <nav aria-label="Main navigation" class="flex items-center justify-between w-full h-11">
     {
       !is404Page && (
-        <div class="flex items-center h-[44px]">
+        <div class="flex items-center h-11">
           <a href="/" class="flex items-center gap-5">
             <img
-              class="favicon dark:invert w-[44px] h-[44px]"
+              class="favicon dark:invert w-11 h-11"
               src={favicon_avif.src}
               alt="Home"
               width="44"
               height="44"
             />
-            <span class="text-[20px] tracking-[0.2em] font-light dark:text-white hidden sm:block" 
+            <span class="text-xl tracking-[0.2em] font-light dark:text-white hidden sm:block"
       style="font-family: var(--font-overpass-mono)">Celso Barriga</span>
           </a>
         </div>
       )
     }
-    <div class="flex items-center h-[44px] gap-2">
+    <div class="flex items-center h-11 gap-2">
       {
         !is404Page && (
           <>
-            <div class="flex items-center justify-center h-[44px] w-[44px]">
+            <div class="flex items-center justify-center h-11 w-11">
               <ThemeToggle />
             </div>
-            <div class="flex items-center justify-center h-[44px] w-[44px]">
-              <Hamburger client:idle />
+            <div class="flex items-center justify-center h-11 w-11">
+              <Hamburger />
             </div>
           </>
         )

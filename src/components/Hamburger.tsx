@@ -74,14 +74,14 @@ export default function Hamburger() {
   return (
     <button
       onClick={toggleMenu}
-      className="w-[30px] h-[30px] bg-transparent border-0 p-0 cursor-pointer relative hamburger flex items-center justify-center"
+      className="w-7.5 h-7.5 bg-transparent border-0 p-0 cursor-pointer relative hamburger flex items-center justify-center"
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}
       aria-controls="nav-links"
     >
-      <div className="relative w-[24px] h-[18px]">
+      <div className="relative w-6 h-4.5">
         <span
-          className="absolute h-[2px] w-full bg-current left-0 transition-transform duration-300"
+          className="absolute h-0.5 w-full bg-current left-0 transition-transform duration-300"
           style={{
             top: "0px",
             transform: isOpen
@@ -90,11 +90,11 @@ export default function Hamburger() {
           }}
         />
         <span
-          className="absolute h-[2px] w-full bg-current left-0 top-[8px] transition-opacity duration-300"
+          className="absolute h-0.5 w-full bg-current left-0 top-2 transition-opacity duration-300"
           style={{ opacity: isOpen ? 0 : 1 }}
         />
         <span
-          className="absolute h-[2px] w-full bg-current left-0 transition-transform duration-300"
+          className="absolute h-0.5 w-full bg-current left-0 transition-transform duration-300"
           style={{
             top: "16px",
             transform: isOpen
