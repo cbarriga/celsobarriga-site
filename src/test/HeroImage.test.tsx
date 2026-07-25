@@ -27,6 +27,7 @@ const defaults = {
   title: "Test Post",
   tags: ["photography", "leica"],
   backgroundImage: "/images/test.avif",
+  xlargeBackgroundImage: "/images/test-xlarge.avif",
   mobileBackgroundImage: "/images/test-mobile.avif",
   positionX: "50%",
   positionY: "50%",

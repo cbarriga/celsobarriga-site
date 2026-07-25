@@ -18,6 +18,7 @@ const { images, tag, url, width, height } = Astro.props;
 >
   <a href={url}>
     <picture>
+      <source media="(min-width: 2500px)" data-srcset-xlarge />
       <source media="(min-width: 1280px)" data-srcset-large />
       <source media="(min-width: 768px)" data-srcset-medium />
       <img

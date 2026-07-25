@@ -21,6 +21,7 @@ interface HeroImageProps {
   title: string;
   tags: string[];
   backgroundImage: string;
+  xlargeBackgroundImage: string;
   mobileBackgroundImage: string;
   positionX?: string;
   positionY?: string;
@@ -32,6 +33,7 @@ export default function HeroImage({
   title,
   tags,
   backgroundImage,
+  xlargeBackgroundImage,
   mobileBackgroundImage,
   positionX = "30%",
   positionY = "50%",
@@ -133,6 +135,7 @@ export default function HeroImage({
     >
       <div ref={parallaxRef} className="absolute inset-0">
         <picture>
+          <source media="(min-width: 2500px)" srcSet={xlargeBackgroundImage} />
           <source media="(min-width: 1200px)" srcSet={backgroundImage} />
           <img
             ref={imgRef}

@@ -5,7 +5,7 @@
 import { shuffle } from "./utils.ts";
 
 interface RandomImageItem {
-  image: { large: string; medium: string; small: string };
+  image: { xlarge?: string; large: string; medium: string; small: string };
   alt: string;
   width: Record<string, number>;
   height: Record<string, number>;
@@ -37,6 +37,7 @@ export function initRandomImages(
       const items: RandomImageItem[] = imageData.large.map(
         (_: string, index: number) => ({
           image: {
+            xlarge: imageData.xlarge?.[index],
             large: imageData.large[index],
             medium: imageData.medium[index],
             small: imageData.small[index],
@@ -53,6 +54,9 @@ export function initRandomImages(
       if (!firstItem) return;
 
       const imgElement = element.querySelector<HTMLImageElement>("img");
+      const sourceXlarge = element.querySelector<HTMLSourceElement>(
+        "source[data-srcset-xlarge]",
+      );
       const sourceLarge = element.querySelector<HTMLSourceElement>(
         "source[data-srcset-large]",
       );
@@ -61,6 +65,9 @@ export function initRandomImages(
       );
 
       if (imgElement && sourceLarge && sourceMedium) {
+        if (sourceXlarge && firstItem.image.xlarge) {
+          sourceXlarge.srcset = firstItem.image.xlarge;
+        }
         sourceLarge.srcset = firstItem.image.large;
         sourceMedium.srcset = firstItem.image.medium;
         imgElement.src = firstItem.image.small;

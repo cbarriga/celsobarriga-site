@@ -7,6 +7,7 @@ import type { ImageMetadata } from "astro";
 import type { CollectionName } from "../scripts/collections";
 
 interface TagImages {
+  xlarge: (string | null)[];
   large: (string | null)[];
   medium: (string | null)[];
   small: (string | null)[];
@@ -23,17 +24,22 @@ const allContent = await getCollection(directory);
 const tags = [...new Set(allContent.map((post) => post.data.tags).flat())];
 
 // De-duplicate image optimization: process each unique src only once
-const imageCache = new Map<string, { large: string | null; medium: string | null; small: string | null }>();
+const imageCache = new Map<
+  string,
+  { xlarge: string | null; large: string | null; medium: string | null; small: string | null }
+>();
 
 async function getOptimizedImages(src: ImageMetadata, alt: string) {
   const cacheKey = src.src;
   if (imageCache.has(cacheKey)) return imageCache.get(cacheKey)!;
-  const [largeImage, mediumImage, smallImage] = await Promise.all([
+  const [xlargeImage, largeImage, mediumImage, smallImage] = await Promise.all([
+    getImage({ src, alt, width: 3840, height: 2160, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
     getImage({ src, alt, width: 1920, height: 1080, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
     getImage({ src, alt, width: 1280, height: 720, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
     getImage({ src, alt, width: 854, height: 480, fit: "inside", decoding: "async", format: "avif", quality: 65 }),
   ]);
   const result = {
+    xlarge: xlargeImage?.src ?? null,
     large: largeImage?.src ?? null,
     medium: mediumImage?.src ?? null,
     small: smallImage?.src ?? null,
@@ -46,10 +52,11 @@ const imagesByTag: Record<string, TagImages> = {};
 for (const post of allContent) {
   for (const tag of post.data.tags) {
     if (!imagesByTag[tag]) {
-      imagesByTag[tag] = { large: [], medium: [], small: [], alt: [] };
+      imagesByTag[tag] = { xlarge: [], large: [], medium: [], small: [], alt: [] };
     }
     if (post.data.image?.src) {
       const optimized = await getOptimizedImages(post.data.image.src, post.data.image.alt);
+      imagesByTag[tag].xlarge.push(optimized.xlarge);
       imagesByTag[tag].large.push(optimized.large);
       imagesByTag[tag].medium.push(optimized.medium);
       imagesByTag[tag].small.push(optimized.small);
@@ -60,11 +67,13 @@ for (const post of allContent) {
 
 const imageSizes = {
   width: {
+    xlarge: 3840,
     large: 1920,
     medium: 1280,
     small: 854,
   },
   height: {
+    xlarge: 2160,
     large: 1080,
     medium: 720,
     small: 480,

@@ -51,12 +51,27 @@ const backgroundImage = image
     })
   : null;
 
+const xlargeBackgroundImage = image
+  ? await getImage({
+      src: image,
+      alt: alt,
+      width: 3840,
+      height: 2160,
+      fit: "inside",
+      format: "avif",
+      quality: 85,
+      loading: "eager",
+      decoding: "sync",
+      fetchpriority: "high",
+    })
+  : null;
+
 const mobileBackgroundImage = image
   ? await getImage({
       src: image,
       alt: alt,
-      width: 1920,
-      height: 1080,
+      width: 800,
+      height: 450,
       fit: "inside",
       format: "avif",
       quality: 85,
@@ -97,6 +112,7 @@ const metaImage = image
         title={title}
         tags={frontmatter.tags}
         backgroundImage={backgroundImage!.src}
+        xlargeBackgroundImage={xlargeBackgroundImage!.src}
         mobileBackgroundImage={mobileBackgroundImage!.src}
         positionX={positionx}
         positionY={positiony}
