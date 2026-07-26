@@ -21,7 +21,10 @@ const favicon_avif = await getImage({
 });
 ---
 
-<header class="mb-5 -mt-2.5">
+<header
+  id="site-header"
+  class="sticky top-0 z-40 mb-5 -mt-2.5 bg-[rgb(244,242,238)] dark:bg-[rgb(34,33,37)]"
+>
   <nav aria-label="Main navigation" class="flex items-center justify-between w-full h-11">
     {
       !is404Page && (
