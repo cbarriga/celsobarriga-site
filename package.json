@@ -10,9 +10,10 @@
     "preview": "astro preview",
     "astro": "astro",
     "postbuild": "pagefind --site dist",
-"create": "node scripts/create-content.js",
+    "create": "node scripts/create-content.js",
     "update-post": "node scripts/update-post.js",
     "update": "node scripts/update-post.js",
+    "tag-photos": "node scripts/tag-photos.js",
     "lint:html": "html-validate \"dist/**/*.html\"",
     "lint:links": "hyperlink dist/index.html --skip-external",
     "lint:site": "bun run build && bun run lint:html && bun run lint:links",
@@ -75,5 +76,11 @@
     "prettier-plugin-astro": "^0.14.1",
     "vitest": "^3.2.4",
     "yaml": "^2.8.2"
+  },
+  "allowScripts": {
+    "core-js@2.6.12": true,
+    "esbuild@0.27.4": true,
+    "fsevents@2.3.3": true,
+    "sharp@0.34.5": true
   }
 }

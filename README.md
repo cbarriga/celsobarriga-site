@@ -117,6 +117,16 @@ image:
 ---
 ```
 
+## Photo Protection
+
+New photos should be tagged to opt out of AI/ML data mining (IPTC `DataMining: Prohibited`) before committing:
+
+```bash
+npm run tag-photos   # requires exiftool (brew install exiftool)
+```
+
+This recurses `src/content/journal/` and tags every `.jpg`/`.jpeg`/`.png`. It's idempotent, so re-running it is safe. Site-wide `robots.txt` and `<meta name="robots" content="noai, noimageai">` are already in place separately.
+
 ## CI
 
 GitHub Actions runs on every push and pull request to `main`:
